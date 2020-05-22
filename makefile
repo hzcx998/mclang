@@ -12,7 +12,13 @@ ifeq ($(OS),Windows_NT)
 	# need mingw include and libs in windows
 	LIBS     += -L"D:/Softwares/Dev-Cpp/MinGW64/lib" -L"D:/Softwares/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc -g3
 	INCS     += -I"D:/Softwares/Dev-Cpp/MinGW64/include" -I"D:/Softwares/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/Softwares/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include"
+			
+	# out file
+	BIN = mc.exe
+
 else
+	# out file
+	BIN = mc
 	ifeq ($(shell uname),Darwin)
 		HOSTOS		:= macos
 		RM		= rm
@@ -35,9 +41,6 @@ CFLAGS   = $(INCS) -g3
 
 # objects		
 OBJS = 	main.o \
-		
-# out file
-BIN = mc
 	
 .PHONY: all clean
 

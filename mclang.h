@@ -65,9 +65,6 @@
 #define false               0
 #endif
 #define bitf                :                   /* bit field */
-#define fetcha              &                   /* fetch addr */
-#define fetchv              *                   /* fetch value */
-
 #define out                                     /* outgoing parameter */
 
 /* integer [unsigned] integer [8, 16, 32, 64] */
@@ -83,16 +80,6 @@ typedef void                nil;
 typedef float               f32;
 typedef double              f64;
 typedef long double         f128;
-
-/* pointer [1-8] */
-#define p1    *
-#define p2    **
-#define p3    ***
-#define p4    ****
-#define p5    *****
-#define p6    ******
-#define p7    *******
-#define p8    ********
 
 /* call a function */
 #define call(_func, ...) \

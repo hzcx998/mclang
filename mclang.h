@@ -28,6 +28,7 @@
 #define end                 }                   /* end block */
 #define loop                while(              /* loop while true */
 #define ret(_value)         return (_value);    /* return a value */
+#define retnil              return;             /* return nil */
 #define and                 &&                  /* logical and */
 #define or                  ||                  /* logical or */
 #define not                 !                   /* logical not */

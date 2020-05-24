@@ -7,12 +7,12 @@
 def(nil, bubble_sort, i32 arr[], i32 len)
 def(nil, selection_sort, i32 arr[], i32 len)
 void selection_sort2(int arr[], int len);
-func(i32, main, i32 argc, i8 p2 argv)
+func(i32, main, i32 argc, i8 ** argv)
     call(printf, "welcome to mclang v%s\n", __MARCO_C_LANG_VERSION__);
 
     i8 a as 1 coda
 
-    i8 p1 str as "hello" coda
+    i8 *str as "hello" coda
 
 	test a == 1 and not get(strcmp, str, "world") then
 	    call(printf, "hello")
@@ -49,7 +49,7 @@ func(i32, main, i32 argc, i8 p2 argv)
         end
     end
 
-    const nil p1 nil_buf as NULL coda
+    const nil *nil_buf as NULL coda
 
     i8 i as 0 coda
 
@@ -85,7 +85,7 @@ func(i32, main, i32 argc, i8 p2 argv)
     end coda
 
     struct student start
-        i8 p1 name coda
+        i8 *name coda
         i32 age bitf 4 coda
         i32 year bitf 4 coda
     end coda
@@ -127,10 +127,10 @@ func(nil, bubble_sort, i32 arr[], i32 len)
     end
 end
 
-func(nil, swap, out i32 p1 a, out i32 p1 b)
-    i32 temp as fetchv a;
-    fetchv a as fetchv b;
-    fetchv b as temp;
+func(nil, swap, out i32 *a, out i32 *b)
+    i32 temp as *a;
+    *a as *b;
+    *b as temp;
 end
 
 func(nil, selection_sort, out i32 arr[], i32 len)
@@ -142,6 +142,6 @@ func(nil, selection_sort, out i32 arr[], i32 len)
                 min as j;    //紀錄最小值
             end
         end
-        call(swap, fetcha arr[min], fetcha arr[i])    //做交換
+        call(swap, &arr[min], &arr[i])    //做交換
     end
 end

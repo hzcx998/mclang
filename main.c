@@ -185,6 +185,11 @@ FUNC (INT32, main) START
     
     DESTROY(obj);
 
+    CONTAINER(shape) obj2;
+
+    BUILD(shape, &obj2, NULL);
+    DEBUILD(&obj2);
+
     printf("end container!\n");
 
     INT32 A = 1;

@@ -144,14 +144,20 @@ CONTAINER_FUNC_LIST_NAME
 #define CONTAINER_INHERIT(name) \
         struct name _inherit
 
+#define BUILD(name, obj, args) \
+        (obj)->_funclist = &(name##_funclist); \
+        (obj)->_funclist->constructor((obj), (args))
+
+#define DEBUILD(obj) \
+        (obj)->_funclist->destructor(obj)
+
 #define CREATE(name, obj, args) \
         do { \
             obj = malloc(sizeof(struct name)); \
             if (obj == NULL) { \
                 break; \
             } \
-            obj->_funclist = &(name##_funclist); \
-            obj->_funclist->constructor(obj, args); \
+            BUILD(name, obj, args); \
         } while (0)
 
 #define CALL(obj, func) \
@@ -163,7 +169,7 @@ CONTAINER_FUNC_LIST_NAME
         do { \
             if (!(obj)) \
                 break; \
-            (obj)->_funclist->destructor(obj); \
+            DEBUILD(obj); \
             free(obj); \
         } while (0)
 

@@ -4,15 +4,16 @@
 #include <string.h>
 #include <stdlib.h>
 
+#if __MARCO_C_LANG_VERSION__ == 0x01    /* v0.1 */
 def(nil, bubble_sort, i32 arr[], i32 len)
 def(nil, selection_sort, i32 arr[], i32 len)
 void selection_sort2(int arr[], int len);
 func(i32, main, i32 argc, i8 ** argv)
-    call(printf, "welcome to mclang v%s\n", __MARCO_C_LANG_VERSION__);
+    call(printf, "welcome to mclang v%s\n", __MARCO_C_LANG_VERSION__)
 
-    i8 a as 1 coda
+    i8 a = 1;
 
-    i8 *str as "hello" coda
+    i8 *str = "hello";
 
 	test a == 1 and not get(strcmp, str, "world") then
 	    call(printf, "hello")
@@ -22,8 +23,8 @@ func(i32, main, i32 argc, i8 ** argv)
         call(printf, "do final.\n")
 	end
 
-    i8 b as 1 coda
-    i8 c as 1, d as 2 coda
+    i8 b = 1;
+    i8 c as 1, d = 2;
     
 	loop b < 10 then 
 	    b += 1;
@@ -145,3 +146,102 @@ func(nil, selection_sort, out i32 arr[], i32 len)
         call(swap, &arr[min], &arr[i])    //做交換
     end
 end
+
+#elif __MARCO_C_LANG_VERSION__ == 0x02    /* v0.2 */
+FUNC (INT32, test);
+
+FUNC (INT32, main) START
+    printf("hello, world!\n");
+    INT32 A = 1;
+    WHILE TRUE THEN
+        A++;
+        printf("A: %d\n", A);
+        IF A >= 5 THEN
+            BREAK;
+        END
+    END
+
+    IF A == 2 THEN
+        printf("A == 2\n");
+    ELIF A == 3 THEN
+        printf("A == 3\n");
+    ELSE
+        printf("A == %d\n", A);
+    END
+
+    DO 
+        A++;
+        CONTINUE;
+    UNTIL A < 10 MEET
+
+    SWITCH  A THEN
+    CASE 7:
+        printf("A IS 7\n");
+        BREAK;
+    CASE 8:
+        printf("A IS 8\n");
+        BREAK;
+    DEFAULT:
+        printf("A == %d\n", A);
+        BREAK;
+    END
+
+    BOOL B = FALSE;
+
+    IF B == FALSE THEN
+        GOTO LABEL_1;
+    ELSE
+        GOTO LABEL_2;
+    END
+
+LABEL_1:
+    printf("AT LABEL 1\n");
+        
+
+LABEL_2:
+    printf("AT LABEL 2\n");
+     
+LABEL_3:
+    printf("AT LABEL 3\n");
+
+    RETURN test();
+END
+
+FUNC (INT32, test) START
+    
+    INT32 i;
+    FOR i = 0; i < 10; i++ THEN
+        printf("i=%d\n", i);
+    END
+
+    ENUM C START
+        C_ABC = 1,
+        C_DEF,
+    END;
+
+    STRUCT D START
+        INT32 A;
+        INT32 B;
+    END;
+    STRUCT D student;
+
+    CHAR DATA[3] = START
+        1, 2, 3
+    END;
+
+    CHAR ITEM;
+    INT32 idx = 0;
+    FOREACH (ITEM, idx, DATA) THEN
+        printf("item:%d\n", ITEM);
+    END
+
+    #define LEN_ARRAY(_array) (sizeof(_array) / sizeof(_array[0]))
+
+    FORINDEX (ITEM, LEN_ARRAY(DATA), 1) THEN
+        printf("index:%d\n", ITEM);
+    END
+    
+    RETURN 0;
+END
+
+#endif 

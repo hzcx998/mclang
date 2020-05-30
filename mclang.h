@@ -12,14 +12,101 @@
  * 
  * Change Logs:
  *  | Date          | Author        | Notes             | Version
- *  | 2020-05-23    | Jason Hu      | First Release     | 0.0.1
+ *  | 2020-05-23    | Jason Hu      | First Release     | 0.1
+ *  | 2020-05-30    | Jason Hu      | Masonry           | 0.2
  */
 #ifndef __MARCO_C_LANG_H__
 #define __MARCO_C_LANG_H__
 
-#define __MARCO_C_LANG_VERSION__    "0.0.1"
+#define __MARCO_C_LANG_VERSION__    0x02    /* v0.2 Masonry */
 
+#if __MARCO_C_LANG_VERSION__ == 0x02    /* v0.2 */
 /* keywords */
+#define IF                  if(                 
+#define ELIF                }else if(           
+#define ELSE                }else{              
+#define THEN                ){                  
+#define WHILE               while(              
+#define AND                 &&                  
+#define OR                  ||                  
+#define NOT                 !                   
+#define DO                  do{                 
+#define UNTIL               }while(             
+#define START               {                   
+#define END                 }                   
+#define MEET                );                  
+
+#define SWITCH              switch(
+
+#ifdef _Bool
+#define BOOL                _Bool
+#define TRUE                true
+#define FALSE               false
+#else
+#define BOOL                char
+#define TRUE                1
+#define FALSE               0
+#endif
+#define OUT
+
+#define RETURN              return
+#define BREAK               break
+#define CONTINUE            continue
+#define GOTO                goto
+#define DEFAULT             default
+#define CASE                case
+#define FOR                 for(
+
+#define ENUM                enum
+#define STRUCT              struct
+#define EXTERN              extern
+#define STATIC              static
+#define REGISTER            register
+#define SIZEOF              sizeof
+#define TYPEDEF             typedef
+#define UNION               union
+#define VOLATILE            volatile
+#define RESTRICT            restrict
+#define INLINE              inline
+
+#define UINT8 unsigned char
+#define UINT16 unsigned short
+#define UINT32 unsigned int
+#define UINT64 unsigned long int
+#define INT8 char
+#define INT16 short
+#define INT32 int
+#define INT64 long int
+#define VOID void
+#define FLOAT32 float
+#define FLOAT64 double
+#define FLOAT128 long double
+#define CHAR char
+
+/* define a function */
+#define FUNC(_ret, _func, ...) \
+        _ret _func (__VA_ARGS__) 
+
+/* get each item in array */
+#define FOREACH(_item, _idx, _array) \
+        for(_item = _array[0];\
+        _idx < (sizeof(_array) / sizeof(_array[0]));\
+        ++_idx, _item = _array[_idx]
+
+/* get each index in a number */
+#define FORINDEX(_item, _num, _step) \
+        for(_item = 0;\
+        _item < _num;\
+        _item += _step
+
+/* loop in condition */
+
+/* ternary operation */
+#define TERNARY(_cond, _x, _y) \
+        _cond ? _x : _y
+
+#elif __MARCO_C_LANG_VERSION__ == 0x01  /* v0.1 */
+
 #define test                if(                 /* test condition */
 #define again               }else if(           /* test again */
 #define last                }else{              /* last to do */
@@ -116,5 +203,7 @@ typedef long double         f128;
 /* ternary operation */
 #define ternary(_cond, _x, _y) \
         _cond ? _x : _y
+
+#endif  /* __MARCO_C_LANG_VERSION__ */
 
 #endif  /* __MARCO_C_LANG_H__ */

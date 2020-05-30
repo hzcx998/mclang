@@ -41,6 +41,8 @@ CFLAGS   = $(INCS) -g3
 
 # objects		
 OBJS = 	main.o \
+		shape.o \
+		
 	
 .PHONY: all clean
 

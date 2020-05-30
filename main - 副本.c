@@ -3,7 +3,6 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
-#include "shape.h"
 
 #if __MARCO_C_LANG_VERSION__ == 0x01    /* v0.1 */
 def(nil, bubble_sort, i32 arr[], i32 len)
@@ -151,11 +150,83 @@ end
 #elif __MARCO_C_LANG_VERSION__ == 0x02    /* v0.2 */
 FUNC (INT32, test);
 
+/* 容器配置 */
+#define CONTAINER_NAME  shape
+#define CONTAINER_FUNC_LIST_NAME shape_funclist
+
+/* 容器 */
+CONTAINER CONTAINER_NAME {
+    // 继承必须是第一个成员
+    //CONTAINER_INHERIT(name);
+    // 函数成员
+    CONTAINER_FUNC_LIST_PTR(CONTAINER_FUNC_LIST_NAME);
+    // 变量成员
+    int width, height;
+};
+
+// 容器共有成员
+static int a, b;
+
+// 构建函数
+CONTAINER_CONSTRUCTOR(CONTAINER_NAME)
+{
+    printf("call constructor!\n");
+}
+// 析构函数
+CONTAINER_DESTRUCTOR(CONTAINER_NAME)
+{
+    printf("call destructor!\n");
+}
+
+// 函数列表
+CONTAINER_FUNC(int, CONTAINER_NAME, get_width)
+{
+
+}
+
+// 函数列表
+CONTAINER_FUNC_ARGS(int, CONTAINER_NAME, set_width, int width)
+{
+
+}
+
+// 函数列表
+CONTAINER_FUNC(int, CONTAINER_NAME, get_area)
+{
+    //printf("area: %d\n", cont->height * cont->width);
+}
+
+// 函数列表
+CONTAINER_FUNC(int, CONTAINER_NAME, show_area)
+{
+    printf("area: %d\n", cont->height * cont->width);
+}
+
+CONTAINER_FUNC_LIST_BOX(CONTAINER_FUNC_LIST_NAME) {
+    CONTAINER_CONSTRUCTOR_PTR(CONTAINER_NAME);
+    CONTAINER_DESTRUCTOR_PTR(CONTAINER_NAME);
+    
+    CONTAINER_FUNC_PTR(int, CONTAINER_NAME, get_width);
+    CONTAINER_FUNC_ARGS_PTR(int, CONTAINER_NAME, set_width, int widht);
+    CONTAINER_FUNC_PTR(int, CONTAINER_NAME, get_area);
+    CONTAINER_FUNC_PTR(int, CONTAINER_NAME, show_area);
+    
+};
+
+CONTAINER_FUNC_LIST(CONTAINER_FUNC_LIST_NAME) = {
+    .constructor = constructor,
+    .destructor = destructor,
+    .get_width = get_width,
+    .set_width = set_width,
+    .get_area = get_area,
+    .show_area = show_area, 
+};
+
 FUNC (INT32, main) START
     printf("hello, world!\n");
 
-    CONTAINER(shape) *obj = NULL, *obj1 = NULL;
-    CREATE (shape, obj,NULL);
+    CONTAINER shape *obj = NULL;
+    CREATE (shape, obj, NULL);
     
     IF obj == NULL THEN
         printf("create obj failed!\n");
@@ -167,21 +238,6 @@ FUNC (INT32, main) START
     CALL (obj, show_area);
     CALL_ARGS (obj, set_width, 200);
     CALL (obj, show_area);
-    
-    CREATE (shape, obj1,NULL);
-    
-    IF obj1 == NULL THEN
-        printf("create obj failed!\n");
-        RETURN -1;    
-    END
-
-    obj1->width = 200;
-    obj1->height = 400;
-    CALL (obj1, show_area);
-    CALL_ARGS (obj1, set_width, 50);
-    CALL (obj1, show_area);
-    
-    DESTROY(obj1);
     
     DESTROY(obj);
 

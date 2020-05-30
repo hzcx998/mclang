@@ -105,26 +105,23 @@
 #define TERNARY(_cond, _x, _y) \
         _cond ? _x : _y
 
-/*
-CONTAINER_NAME
-CONTAINER_FUNC_LIST_NAME
-*/
-#define CONTAINER(name) struct name
 
-#define CONTAINER_CONSTRUCTOR \
-        static void constructor(struct CONTAINER_NAME *cont, void *args)
+#define CONTAINER struct
+
+#define CONTAINER_CONSTRUCTOR(name) \
+        static void constructor(struct name *cont, void *args)
 #define CONTAINER_CONSTRUCTOR_PTR(name) \
         void (*constructor)(struct name *cont, void *args)
-#define CONTAINER_DESTRUCTOR \
-        static void destructor(struct CONTAINER_NAME *cont)
+#define CONTAINER_DESTRUCTOR(name) \
+        static void destructor(struct name *cont)
 #define CONTAINER_DESTRUCTOR_PTR(name) \
         void (*destructor)(struct name *cont)
 
-#define CONTAINER_FUNC(ret, func) \
-        static ret func(struct CONTAINER_NAME *cont)
+#define CONTAINER_FUNC(ret, name, func) \
+        static ret func(struct name *cont)
 
-#define CONTAINER_FUNC_ARGS(ret, func,...) \
-        static ret func(struct CONTAINER_NAME *cont,__VA_ARGS__)
+#define CONTAINER_FUNC_ARGS(ret, name, func,...) \
+        static ret func(struct name *cont,__VA_ARGS__)
 
 #define CONTAINER_FUNC_PTR(ret, name, func) \
         ret (*func)(struct name *cont)
@@ -139,7 +136,7 @@ CONTAINER_FUNC_LIST_NAME
         struct name *_funclist
 
 #define CONTAINER_FUNC_LIST(name) \
-        struct name name
+        struct name CONTAINER_FUNC_LIST_NAME
         
 #define CONTAINER_INHERIT(name) \
         struct name _inherit
@@ -150,7 +147,7 @@ CONTAINER_FUNC_LIST_NAME
             if (obj == NULL) { \
                 break; \
             } \
-            obj->_funclist = &(name##_funclist); \
+            obj->_funclist = &CONTAINER_FUNC_LIST_NAME; \
             obj->_funclist->constructor(obj, args); \
         } while (0)
 
@@ -158,6 +155,12 @@ CONTAINER_FUNC_LIST_NAME
         (obj)->_funclist->func(obj)
 #define CALL_ARGS(obj, func, ...) \
         (obj)->_funclist->func(obj, __VA_ARGS__)
+
+#define INHERIT(obj, func) \
+        (obj)->_inherit._funclist->func(obj)
+
+#define INHERIT_ARGS(obj, func, ...) \
+        (obj)->_inherit._funclist->func(obj, __VA_ARGS__)
 
 #define DESTROY(obj) \
         do { \

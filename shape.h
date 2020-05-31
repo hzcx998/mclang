@@ -1,31 +1,31 @@
-#ifndef __SHAPE_CONTAINER_H__
-#define __SHAPE_CONTAINER_H__
+#ifndef __SHAPE_object_H__
+#define __SHAPE_object_H__
 
 #include "mclang.h"
 
-#define SHAPE_CONTAINER_NAME              shape
-#define SHAPE_CONTAINER_FUNC_LIST_NAME    shape_funclist
+#define shape_object_name              shape
+#define shape_object_funclist_name    shape_funclist
 
 /* 容器 */
-CONTAINER(SHAPE_CONTAINER_NAME) START
+object(shape_object_name) begin
     // 函数成员
-    CONTAINER_FUNC_LIST_PTR(SHAPE_CONTAINER_FUNC_LIST_NAME);
+    object_funclist_ptr(shape_object_funclist_name);
     // 变量成员
-    INT32 width, height;
-END;
+    int32 width, height;
+end;
 
 /* 函数列表盒子 */
-CONTAINER_FUNC_LIST_BOX(SHAPE_CONTAINER_FUNC_LIST_NAME) START
-    CONTAINER_CONSTRUCTOR_PTR(SHAPE_CONTAINER_NAME);
-    CONTAINER_DESTRUCTOR_PTR(SHAPE_CONTAINER_NAME);
+object_funclist_BOX(shape_object_funclist_name) begin
+    object_constructor_ptr(shape_object_name);
+    object_destructor_ptr(shape_object_name);
     
-    CONTAINER_FUNC_PTR(INT32, SHAPE_CONTAINER_NAME, get_width);
-    CONTAINER_FUNC_ARGS_PTR(INT32, SHAPE_CONTAINER_NAME, set_width, INT32 widht);
-    CONTAINER_FUNC_PTR(INT32, SHAPE_CONTAINER_NAME, get_area);
-    CONTAINER_FUNC_PTR(INT32, SHAPE_CONTAINER_NAME, show_area);
-END;
+    object_func_ptr(int32, shape_object_name, get_width);
+    object_funcn_ptr(int32, shape_object_name, set_width, int32 widht);
+    object_func_ptr(int32, shape_object_name, get_area);
+    object_func_ptr(int32, shape_object_name, show_area);
+end;
 
 /* 导出函数列表 */
-EXTERN CONTAINER_FUNC_LIST(SHAPE_CONTAINER_FUNC_LIST_NAME);
+extern object_funclist(shape_object_funclist_name);
 
-#endif  /* __SHAPE_CONTAINER_H__ */
+#endif  /* __SHAPE_object_H__ */

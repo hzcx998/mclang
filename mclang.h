@@ -18,9 +18,142 @@
 #ifndef __MARCO_C_LANG_H__
 #define __MARCO_C_LANG_H__
 
-#define __MARCO_C_LANG_VERSION__    0x02    /* v0.2 Masonry */
+#define __MARCO_C_LANG_VERSION__    0x03    /* v0.3 */
 
-#if __MARCO_C_LANG_VERSION__ == 0x02    /* v0.2 */
+#if __MARCO_C_LANG_VERSION__ == 0x03    /* v0.3 */
+/* keywords */
+#define when                if(                 
+#define elif                }else if(           
+#define other               }else{              
+#define then                ){                  
+#define loop               while(              
+#define and                 &&                  
+#define or                  ||                  
+#define not                 !                   
+#define cycle                do{                 
+#define until               }while(             
+#define begin               {                   
+#define end                 }                   
+#define meet                );                  
+
+#define match              switch(
+
+#ifdef _Bool
+#define boll                _Bool
+#define true                true
+#define false               false
+#else
+#define bool                char
+#define true                1
+#define false               0
+#endif
+#define out
+
+#define forcond                 for(
+
+#define uint8 unsigned char
+#define uint16 unsigned short
+#define uint32 unsigned int
+#define uint64 unsigned long int
+#define int8 char
+#define int16 short
+#define int32 int
+#define int64 long int
+#define f32 float
+#define f64 double
+#define f128 long double
+
+/* define a function */
+#define func(_ret, _func, ...) \
+        _ret _func (__VA_ARGS__) 
+
+/* get each item in array */
+#define foreach(_item, _idx, _array) \
+        for(_item = _array[0];\
+        _idx < (sizeof(_array) / sizeof(_array[0]));\
+        ++_idx, _item = _array[_idx]
+
+/* get each index in a number */
+#define forindex(_item, _num, _step) \
+        for(_item = 0;\
+        _item < _num;\
+        _item += _step
+
+/* loop in condition */
+
+/* ternary operation */
+#define ternary(_cond, _x, _y) \
+        _cond ? _x : _y
+
+/*
+object_name
+object_funclist_name
+*/
+#define object(name) struct name
+
+#define object_constructor \
+        static void constructor(struct object_name *cont, void *args)
+#define object_constructor_ptr(name) \
+        void (*constructor)(struct name *cont, void *args)
+#define object_destructor \
+        static void destructor(struct object_name *cont)
+#define object_destructor_ptr(name) \
+        void (*destructor)(struct name *cont)
+
+#define object_func(ret, func) \
+        static ret func(struct object_name *cont)
+
+#define object_funcn(ret, func,...) \
+        static ret func(struct object_name *cont,__VA_ARGS__)
+
+#define object_func_ptr(ret, name, func) \
+        ret (*func)(struct name *cont)
+
+#define object_funcn_ptr(ret, name, func, ...) \
+        ret (*func)(struct name *cont, __VA_ARGS__)
+
+#define object_funclist_BOX(name) \
+        struct name
+        
+#define object_funclist_ptr(name) \
+        struct name *_funclist
+
+#define object_funclist(name) \
+        struct name name
+        
+#define object_inherit(name) \
+        struct name _inherit
+
+#define build(name, obj, args) \
+        (obj)->_funclist = &(name##_funclist); \
+        (obj)->_funclist->constructor((obj), (args))
+
+#define debuild(obj) \
+        (obj)->_funclist->destructor(obj)
+
+#define create(name, obj, args) \
+        do { \
+            obj = malloc(sizeof(struct name)); \
+            if (obj == NULL) { \
+                break; \
+            } \
+            build(name, obj, args); \
+        } while (0)
+
+#define call(obj, func) \
+        (obj)->_funclist->func(obj)
+#define calln(obj, func, ...) \
+        (obj)->_funclist->func(obj, __VA_ARGS__)
+
+#define destroy(obj) \
+        do { \
+            if (!(obj)) \
+                break; \
+            debuild(obj); \
+            free(obj); \
+        } while (0)
+
+#elif __MARCO_C_LANG_VERSION__ == 0x02    /* v0.2 */
 /* keywords */
 #define IF                  if(                 
 #define ELIF                }else if(           
@@ -84,7 +217,7 @@
 #define CHAR char
 
 /* define a function */
-#define FUNC(_ret, _func, ...) \
+#define func(_ret, _func, ...) \
         _ret _func (__VA_ARGS__) 
 
 /* get each item in array */
@@ -106,42 +239,42 @@
         _cond ? _x : _y
 
 /*
-CONTAINER_NAME
-CONTAINER_FUNC_LIST_NAME
+object_name
+object_funclist_name
 */
-#define CONTAINER(name) struct name
+#define object(name) struct name
 
-#define CONTAINER_CONSTRUCTOR \
-        static void constructor(struct CONTAINER_NAME *cont, void *args)
-#define CONTAINER_CONSTRUCTOR_PTR(name) \
+#define object_constructor \
+        static void constructor(struct object_name *cont, void *args)
+#define object_constructor_ptr(name) \
         void (*constructor)(struct name *cont, void *args)
-#define CONTAINER_DESTRUCTOR \
-        static void destructor(struct CONTAINER_NAME *cont)
-#define CONTAINER_DESTRUCTOR_PTR(name) \
+#define object_destructor \
+        static void destructor(struct object_name *cont)
+#define object_destructor_ptr(name) \
         void (*destructor)(struct name *cont)
 
-#define CONTAINER_FUNC(ret, func) \
-        static ret func(struct CONTAINER_NAME *cont)
+#define object_func(ret, func) \
+        static ret func(struct object_name *cont)
 
-#define CONTAINER_FUNC_ARGS(ret, func,...) \
-        static ret func(struct CONTAINER_NAME *cont,__VA_ARGS__)
+#define object_func_ARGS(ret, func,...) \
+        static ret func(struct object_name *cont,__VA_ARGS__)
 
-#define CONTAINER_FUNC_PTR(ret, name, func) \
+#define object_func_ptr(ret, name, func) \
         ret (*func)(struct name *cont)
 
-#define CONTAINER_FUNC_ARGS_PTR(ret, name, func, ...) \
+#define object_func_ARGS_ptr(ret, name, func, ...) \
         ret (*func)(struct name *cont, __VA_ARGS__)
 
-#define CONTAINER_FUNC_LIST_BOX(name) \
+#define object_func_LIST_BOX(name) \
         struct name
         
-#define CONTAINER_FUNC_LIST_PTR(name) \
+#define object_func_LIST_ptr(name) \
         struct name *_funclist
 
-#define CONTAINER_FUNC_LIST(name) \
+#define object_func_LIST(name) \
         struct name name
         
-#define CONTAINER_INHERIT(name) \
+#define object_INHERIT(name) \
         struct name _inherit
 
 #define BUILD(name, obj, args) \

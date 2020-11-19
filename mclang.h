@@ -31,12 +31,9 @@
 #define and                 &&                  
 #define or                  ||                  
 #define not                 !                   
-#define cycle               do{                 
-#define until               }while(             
 #define begin               {                   
 #define end                 }                      
 #define enddata             };                
-#define endcycle            );                  
 
 #define match               switch(
 

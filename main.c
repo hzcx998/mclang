@@ -27,11 +27,6 @@ def (main, s32) begin
         func(printf,"A == %d\n", A)
     end
 
-    cycle 
-        evainc(A)
-        rep
-    until A < 10 endcycle
-
     match A then
     branch(7)
         func(printf,"A IS 7\n")

@@ -15,30 +15,30 @@
  *  | 2020-05-23    | Jason Hu      | First Release     | 0.1
  *  | 2020-05-30    | Jason Hu      | Masonry           | 0.2
  *  | 2020-06-1     | Jason Hu      | Masonry           | 0.3
- * 
+ *  | 2020-10-20    | Jason Hu      | Cola              | 0.4
  */
 #ifndef __MARCO_C_LANG_H__
 #define __MARCO_C_LANG_H__
 
-#define __MARCO_C_LANG_VERSION__    0x03    /* v0.3 */
+#define __MARCO_C_LANG_VERSION__    0x04    /* v0.4 */
 
 /* keywords */
 #define when                if(                 
 #define elif                }else if(           
 #define other               }else{              
 #define then                ){                  
-#define loop               while(              
+#define loop                while(              
 #define and                 &&                  
 #define or                  ||                  
 #define not                 !                   
-#define cycle                do{                 
+#define cycle               do{                 
 #define until               }while(             
 #define begin               {                   
 #define end                 }                      
 #define enddata             };                
 #define endcycle            );                  
 
-#define match              switch(
+#define match               switch(
 
 #ifdef _Bool
 #define boll                _Bool
@@ -51,23 +51,35 @@
 #endif
 #define out
 
-#define forcond                 for(
+#define forcond             for(
+#define branch(x)           case x:
+#define nomatch             default:
+#define skip                break;
+#define rep                 continue;
 
-#define uint8 unsigned char
-#define uint16 unsigned short
-#define uint32 unsigned int
-#define uint64 unsigned long int
-#define int8 char
-#define int16 short
-#define int32 int
-#define int64 long int
-#define f32 float
-#define f64 double
-#define f128 long double
+#define u8      unsigned char
+#define u16     unsigned short
+#define u32     unsigned int
+#define u64     unsigned long int
+#define s8      char
+#define s16     short
+#define s32     int
+#define s64     long int
+#define f32     float
+#define f64     double
+#define f128    long double
+
+/* declare a function */
+#define decl(_func, _ret, ...) \
+        _ret _func (__VA_ARGS__);
 
 /* define a function */
-#define def(_ret, _func, ...) \
+#define def(_func, _ret, ...) \
         _ret _func (__VA_ARGS__) 
+
+/* call a function */
+#define func(_func, ...) \
+        _func(__VA_ARGS__);
 
 /* get each item in array */
 #define foreach(_item, _idx, _array) \
@@ -81,84 +93,46 @@
         _item < _num;\
         _item += _step
 
-/* loop in condition */
-
 /* ternary operation */
 #define ternary(_cond, _x, _y) \
         _cond ? _x : _y
 
-#define LEN_ARRAY(_array) (sizeof(_array) / sizeof(_array[0]))
+#define list(_name)                 enum _name
+#define group(_name)                struct _name
 
-/*
-object_name
-object_funclist_name
-*/
-#define object(name) struct name
+#define lable(_name)                _name:
+#define jmp(_name)                  goto _name;
 
-#define object_constructor \
-        static void constructor(struct object_name *cont, void *args)
-#define object_constructor_ptr(name) \
-        void (*constructor)(struct name *cont, void *args)
-#define object_destructor \
-        static void destructor(struct object_name *cont)
-#define object_destructor_ptr(name) \
-        void (*destructor)(struct name *cont)
+#define var(_name, _type)           _type _name;
+#define varset(_name, _type, _val)  _type _name = _val;
+#define varmult(_name, _type) _type _name = 
 
-#define object_func(ret, func) \
-        static ret func(struct object_name *cont)
+#define eva(_val, _state)           _val = _state;
+#define reva(_state, _val)          _val = _state;
+#define arg(_name, _type)           _type _name
 
-#define object_funcn(ret, func,...) \
-        static ret func(struct object_name *cont,__VA_ARGS__)
+#define evainc(_val)                _val++;
+#define evadec(_val)                _val--;
 
-#define object_func_ptr(ret, name, func) \
-        ret (*func)(struct name *cont)
+#define revainc(_val)               ++_val;
+#define revadec(_val)               --_val;
 
-#define object_funcn_ptr(ret, name, func, ...) \
-        ret (*func)(struct name *cont, __VA_ARGS__)
+#define inc(_val)                   _val++
+#define dec(_val)                   _val--
+#define rinc(_val)                  ++_val
+#define rdec(_val)                  ++_val
 
-#define object_funclist_box(name) \
-        struct name
-        
-#define object_funclist_ptr(name) \
-        struct name *_funclist
+#define LEN_ARRAY(_array)           (sizeof(_array) / sizeof(_array[0]))
 
-#define object_funclist(name) \
-        struct name name
-        
-#define object_inherit(name) \
-        struct name _inherit
-
-#define build(name, obj, args) \
-        (obj)->_funclist = &(name##_funclist); \
-        (obj)->_funclist->constructor((obj), (args))
-
-#define debuild(obj) \
-        (obj)->_funclist->destructor(obj)
-
-#define create(name, obj, args) \
-        do { \
-            obj = malloc(sizeof(struct name)); \
-            if (obj == NULL) { \
-                break; \
-            } \
-            build(name, obj, args); \
-        } while (0)
-
-#define func(obj, func) \
-        (obj)->_funclist->func(obj)
-#define funcn(obj, func, ...) \
-        (obj)->_funclist->func(obj, __VA_ARGS__)
-#define set(obj, m, val) \
-        (obj)->m = val
-#define get(obj, m, val) \
-        (val) = (obj)->m
-
-#define destroy(obj) \
-        do { \
-            if (!(obj)) \
-                break; \
-            debuild(obj); \
-            free(obj); \
-        } while (0)
+/* try catch */
+#include <setjmp.h>
+/* For the full documentation and explanation of the code below, please refer to
+ * http://www.di.unipi.it/~nids/docs/longjump_try_trow_catch.html
+ */
+#define try         do { jmp_buf ex_buf__; switch( setjmp(ex_buf__) ) { case 0: while(1) { {
+#define catch(_x)   } break; case _x: {
+#define finally     } break; } default: { {
+#define endtry      } break; } } }while(0);
+#define throw(_x)   longjmp(ex_buf__, _x);
 
 #endif  /* __MARCO_C_LANG_H__ */

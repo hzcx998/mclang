@@ -3,137 +3,128 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
-#include "shape.h"
 
-def (int32, test);
+decl(test, s32, arg(a, s32), arg(b, s32))
 
-def (int32, main) begin
-    printf("hello, world!\n");
-
-    object (shape) *obj = NULL, *obj1 = NULL;
-    create (shape, obj,NULL);
-    
-    when obj == NULL then
-        printf("create obj failed!\n");
-        return -1;    
-    end
-
-    set(obj, width, 100);
-    set(obj, height, 200);
-    func (obj, show_area);
-    funcn (obj, set_width, 200);
-    func (obj, show_area);
-    
-    create (shape, obj1,NULL);
-    
-    when obj1 == NULL then
-        printf("create obj failed!\n");
-        return -1;    
-    end
-
-    obj1->width = 200;
-    obj1->height = 400;
-    func (obj1, show_area);
-    funcn (obj1, set_width, 50);
-    func (obj1, show_area);
-    
-    destroy(obj1);
-    
-    destroy(obj);
-
-    object (shape) obj2;
-
-    build(shape, &obj2, NULL);
-    debuild(&obj2);
-
-    printf("end container!\n");
-
-    int A = 1;
+def (main, s32) begin
+    func(printf, "hello, world!\n")
+    var(a, s32)
+    varset(A, s32, 1)
+    eva(A, A+1)
     loop true then
-        A++;
-        printf("A: %d\n", A);
+        evainc(A)
+        func(printf, "A: %d\n", A)
         when A >= 5 then
-            break;
+            skip
         end
     end
 
     when A == 2 then
-        printf("A == 2\n");
+        func(printf,"A == 2\n")
     elif A == 3 then
-        printf("A == 3\n");
+        func(printf,"A == 3\n")
     other
-        printf("A == %d\n", A);
+        func(printf,"A == %d\n", A)
     end
 
     cycle 
-        A++;
-        continue;
+        evainc(A)
+        rep
     until A < 10 endcycle
 
-    match  A then
-    case 7:
-        printf("A IS 7\n");
-        break;
-    case 8:
-        printf("A IS 8\n");
-        break;
-    default:
-        printf("A == %d\n", A);
-        break;
+    match A then
+    branch(7)
+        func(printf,"A IS 7\n")
+        skip
+    branch(8)
+        func(printf,"A IS 8\n")
+        skip
+    branch(9)
+        func(printf,"A == %d\n", A)
+        skip
+    nomatch
+        skip
     end
 
-    bool B = false;
-
+    varset(B, bool, false)
     when B == false then
-        goto label_1;
+        jmp(label_1)
     other
-        goto label_2;
+        jmp(label_1)
     end
 
-label_1:
-    printf("AT LABEL 1\n");
-        
+lable(label_1)
+    func(printf,"AT LABEL 1\n")
+    
+lable(label_2)
+    func(printf,"AT LABEL 2\n")
 
-label_2:
-    printf("AT LABEL 2\n");
-     
-label_3:
-    printf("AT LABEL 3\n");
-
-    return test();
+lable(label_3)
+    func(printf,"AT LABEL 3\n")
+    return func(test,1, 2)
 end
 
-def (int32, test) begin
-    
-    int32 i;
-    forcond i = 0; i < 10; i++ then
-        printf("i=%d\n", i);
+def (test, s32, arg(x, s32), arg(y, s32)) begin
+
+    var(i, s32)
+    forcond i = 0; i < 10; inc(i) then
+        func(printf, "i=%d\n", i)
     end
 
-    enum C begin
+    list (C) begin
         C_ABC = 1,
         C_DEF,
     enddata
 
-    struct D begin
-        int32 A;
-        int32 B;
+    group (D) begin
+        var(a, s32)
+        var(b, s32)
     enddata
-    struct D student;
 
-    char data[3] = begin
+    var(student, group(D))
+    varmult(stu0, group(D)) begin
+        1, 2
+    enddata
+
+    var(db0[10], char)
+    varmult(data[10], char) begin
         1, 2, 3
     enddata
 
-    char ITEM;
-    int32 idx = 0;
+    var(ITEM, char)
+    varset(idx, s32, 0)
     foreach (ITEM, idx, data) then
-        printf("item:%d\n", ITEM);
+        func(printf,"item:%d\n", ITEM)
     end
 
     forindex (ITEM, LEN_ARRAY(data), 1) then
-        printf("index:%d\n", ITEM);
+        func(printf,"index:%d\n", ITEM)
     end
-    
+
+    varset(a, int, 3)
+    try
+        when a == 1 then
+            throw(1)
+        elif a == 2 then
+            throw(2)
+        other 
+            try
+                when a > 2 then
+                    func(printf,"throw 1\n")
+                    throw(1)
+                end
+            catch(1)
+                func(printf,"throw 3\n")
+                throw(3)
+            endtry
+        end
+    catch(1)
+        func(printf,"catch 1\n")
+    catch(2)
+        func(printf,"catch 2\n")
+    finally
+        func(printf,"catch finally\n")
+    endtry
+
     return 0;
 end

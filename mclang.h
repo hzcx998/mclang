@@ -17,10 +17,10 @@
  *  | 2020-06-1     | Jason Hu      | Masonry           | 0.3
  *  | 2020-10-20    | Jason Hu      | Cola              | 0.4
  */
-#ifndef __MARCO_C_LANG_H__
-#define __MARCO_C_LANG_H__
+#ifndef _MARCO_C_LANG_H
+#define _MARCO_C_LANG_H
 
-#define __MARCO_C_LANG_VERSION__    0x04    /* v0.4 */
+#define _MCLANG_VERSION    0x04    /* v0.4 */
 
 /* keywords */
 #define when                if(                 
@@ -118,9 +118,12 @@
 #define dec(_val)                   _val--
 #define rinc(_val)                  ++_val
 #define rdec(_val)                  ++_val
+#define ret(_val)                   return _val;
 
 #define LEN_ARRAY(_array)           (sizeof(_array) / sizeof(_array[0]))
 
+#define _USE_EXCEPTION
+#ifdef _USE_EXCEPTION
 /* try catch */
 #include <setjmp.h>
 /* For the full documentation and explanation of the code below, please refer to
@@ -131,5 +134,6 @@
 #define finally     } break; } default: { {
 #define endtry      } break; } } }while(0);
 #define throw(_x)   longjmp(ex_buf__, _x);
+#endif /* _USE_EXCEPTION */
 
-#endif  /* __MARCO_C_LANG_H__ */
+#endif  /* _MARCO_C_LANG_H */

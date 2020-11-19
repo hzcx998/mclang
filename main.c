@@ -56,7 +56,7 @@ lable(label_2)
 
 lable(label_3)
     func(printf,"AT LABEL 3\n")
-    return func(test,1, 2)
+    ret(test(1, 2))
 end
 
 def (test, s32, arg(x, s32), arg(y, s32)) begin
@@ -121,5 +121,5 @@ def (test, s32, arg(x, s32), arg(y, s32)) begin
         func(printf,"catch finally\n")
     endtry
 
-    return 0;
+    ret(0)
 end

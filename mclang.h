@@ -23,7 +23,7 @@
 #define _MCLANG_VERSION    0x04    /* v0.4 */
 
 /* keywords */
-#define when                if(                 
+#define is                  if(                 
 #define elif                }else if(           
 #define other               }else{              
 #define then                ){                  

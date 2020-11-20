@@ -14,12 +14,12 @@ def (main, s32) begin
     loop true then
         evainc(A)
         func(printf, "A: %d\n", A)
-        when A >= 5 then
+        is A >= 5 then
             skip
         end
     end
 
-    when A == 2 then
+    is A == 2 then
         func(printf,"A == 2\n")
     elif A == 3 then
         func(printf,"A == 3\n")
@@ -42,7 +42,7 @@ def (main, s32) begin
     end
 
     varset(B, bool, false)
-    when B == false then
+    is B == false then
         jmp(label_1)
     other
         jmp(label_1)
@@ -98,13 +98,13 @@ def (test, s32, arg(x, s32), arg(y, s32)) begin
 
     varset(a, int, 3)
     try
-        when a == 1 then
+        is a == 1 then
             throw(1)
         elif a == 2 then
             throw(2)
         other 
             try
-                when a > 2 then
+                is a > 2 then
                     func(printf,"throw 1\n")
                     throw(1)
                 end

@@ -16,24 +16,23 @@
  *  | 2020-05-30    | Jason Hu      | Masonry           | 0.2
  *  | 2020-06-1     | Jason Hu      | Masonry           | 0.3
  *  | 2020-10-20    | Jason Hu      | Cola              | 0.4
+ *  | 2020-11-27    | Jason Hu      | Peisi             | 0.5
  */
 #ifndef _MARCO_C_LANG_H
 #define _MARCO_C_LANG_H
 
-#define _MCLANG_VERSION    0x04    /* v0.4 */
+#define _MCLANG_VERSION    0x05    /* v0.5 */
 
 /* keywords */
-#define is                  if(                 
-#define elif                }else if(           
-#define other               }else{              
+#define cmp                 if(                 
+#define recmp               }else if(           
+#define nocmp               }else{              
 #define then                ){                  
 #define loop                while(              
 #define and                 &&                  
 #define or                  ||                  
-#define not                 !                   
-#define begin               {                   
+#define not                 !                 
 #define end                 }                      
-#define enddata             };                
 
 #define match               switch(
 
@@ -53,18 +52,20 @@
 #define nomatch             default:
 #define skip                break;
 #define rep                 continue;
+#define local               static
 
-#define u8      unsigned char
-#define u16     unsigned short
-#define u32     unsigned int
-#define u64     unsigned long int
-#define s8      char
-#define s16     short
-#define s32     int
-#define s64     long int
-#define f32     float
-#define f64     double
-#define f128    long double
+typedef unsigned char       u8;
+typedef unsigned short      u16;
+typedef unsigned int        u32;
+typedef unsigned long int   u64;
+typedef char                s8;
+typedef short               s16;
+typedef int                 s32;
+typedef long int            s64;
+typedef float               f32;
+typedef double              f64;
+typedef long double         f128;
+typedef void * nil;
 
 /* declare a function */
 #define decl(_func, _ret, ...) \
@@ -72,10 +73,10 @@
 
 /* define a function */
 #define def(_func, _ret, ...) \
-        _ret _func (__VA_ARGS__) 
+        _ret _func (__VA_ARGS__) {
 
 /* call a function */
-#define func(_func, ...) \
+#define call(_func, ...) \
         _func(__VA_ARGS__);
 
 /* get each item in array */
@@ -94,33 +95,29 @@
 #define ternary(_cond, _x, _y) \
         _cond ? _x : _y
 
+/* mutli elememnts with list,group,let */
+#define mutli(_name, ...)           _name {__VA_ARGS__};
+
 #define list(_name)                 enum _name
 #define group(_name)                struct _name
 
 #define lable(_name)                _name:
 #define jmp(_name)                  goto _name;
 
+// TODO: add var(_name, _type, _value)
 #define var(_name, _type)           _type _name;
-#define varset(_name, _type, _val)  _type _name = _val;
-#define varmult(_name, _type) _type _name = 
+#define let(_name, _type)          _type _name = 
 
-#define eva(_val, _state)           _val = _state;
-#define reva(_state, _val)          _val = _state;
+#define as(_val, _state)            _val = _state;
 #define arg(_name, _type)           _type _name
-
-#define evainc(_val)                _val++;
-#define evadec(_val)                _val--;
-
-#define revainc(_val)               ++_val;
-#define revadec(_val)               --_val;
 
 #define inc(_val)                   _val++
 #define dec(_val)                   _val--
-#define rinc(_val)                  ++_val
-#define rdec(_val)                  ++_val
-#define ret(_val)                   return _val;
+#define incr(_val)                  ++_val
+#define decr(_val)                  ++_val
+#define back(_val)                  return _val;
 
-#define LEN_ARRAY(_array)           (sizeof(_array) / sizeof(_array[0]))
+#define arraysize(_array)           (sizeof(_array) / sizeof(_array[0]))
 
 #define _USE_EXCEPTION
 #ifdef _USE_EXCEPTION
@@ -135,5 +132,29 @@
 #define endtry      } break; } } }while(0);
 #define throw(_x)   longjmp(ex_buf__, _x);
 #endif /* _USE_EXCEPTION */
+
+#define _USE_COROUTINE
+#ifdef _USE_COROUTINE
+
+/* For the full documentation and explanation of the code below, please refer to
+ * https://www.chiark.greenend.org.uk/~sgtatham/coroutine.h
+ */
+
+#define begincoro      static int _coro_line = 0; switch(_coro_line) { case 0:;;
+#define endcoro(z)     } return (z);
+#define endcorono      } return;
+
+#define yeild(z)     \
+        do {\
+            _coro_line=__LINE__;\
+            return (z); case __LINE__:;\
+        } while (0);
+#define yeildno       \
+        do {\
+            _coro_line=__LINE__;\
+            return; case __LINE__:;\
+        } while (0);
+
+#endif /* _USE_COROUTINE */
 
 #endif  /* _MARCO_C_LANG_H */

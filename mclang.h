@@ -37,9 +37,7 @@
 #define match               switch(
 
 #ifdef _Bool
-#define boll                _Bool
-#define true                true
-#define false               false
+#define bool                _Bool
 #else
 #define bool                char
 #define true                1

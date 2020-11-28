@@ -18,7 +18,7 @@ end
 def (main, s32)
     call(printf, "hello, world!\n")
     var(a, s32)
-    var(A, s32) as(A, 1)
+    var(A, s32, 1)
     as(A, A + 1)
     loop true then
         as(A, A+1)
@@ -50,7 +50,7 @@ def (main, s32)
         skip
     end
     
-    var(B, bool) as(B, false)
+    var(B, bool, false)
     cmp B == false then
         jmp(label_1)
     nocmp
@@ -103,7 +103,7 @@ def (test, s32, arg(x, s32), arg(y, s32))
     )
 
     var(item, char)
-    var(idx, s32) as(idx, 0)
+    var(idx, s32, 0)
     foreach (item, idx, data) then
         call(printf,"item:%d\n", item)
     end
@@ -112,7 +112,7 @@ def (test, s32, arg(x, s32), arg(y, s32))
         call(printf,"index:%d\n", item)
     end
 
-    var(a, int) as(a, 3)
+    var(a, int, 3)
     try
         cmp a == 1 then
             throw(1)

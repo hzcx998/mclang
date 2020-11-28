@@ -102,8 +102,6 @@ typedef void * nil;
 #define lable(_name)                _name:
 #define jmp(_name)                  goto _name;
 
-// TODO: add var(_name, _type, _value)
-#define var(_name, _type)           _type _name;
 #define let(_name, _type)          _type _name = 
 
 #define as(_val, _state)            _val = _state;
@@ -116,6 +114,59 @@ typedef void * nil;
 #define back(_val)                  return _val;
 
 #define arraysize(_array)           (sizeof(_array) / sizeof(_array[0]))
+
+
+/* For the full documentation and explanation of the code below, please refer to
+ * https://github.com/GorgonMeducer/PLOOC/blob/master/plooc.h
+ */
+#if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) || defined(__cplusplus)
+/*! \brief You can use __PLOOC_EVAL() to dynamically select the right API which
+ *!        has the right number of parameters (no more than 8).
+ */
+//! @{
+#define __PLOOC_VA_NUM_ARGS_IMPL(   _0,_1,_2,_3,_4,_5,_6,_7,_8,_9,_10,_11,_12,  \
+                                    _13,_14,_15,_16,__N,...)      __N
+#define __PLOOC_VA_NUM_ARGS(...)                                                \
+            __PLOOC_VA_NUM_ARGS_IMPL( 0,##__VA_ARGS__,16,15,14,13,12,11,10,9,   \
+                                      8,7,6,5,4,3,2,1,0)
+
+#define __16_PLOOC_EVAL(__FUNC, __NO_ARGS)  __FUNC##__NO_ARGS
+#define __15_PLOOC_EVAL(__FUNC, __NO_ARGS)  __16_PLOOC_EVAL(__FUNC, __NO_ARGS)
+#define __14_PLOOC_EVAL(__FUNC, __NO_ARGS)  __16_PLOOC_EVAL(__FUNC, __NO_ARGS)
+#define __13_PLOOC_EVAL(__FUNC, __NO_ARGS)  __14_PLOOC_EVAL(__FUNC, __NO_ARGS)
+
+#define __12_PLOOC_EVAL(__FUNC, __NO_ARGS)  __13_PLOOC_EVAL(__FUNC, __NO_ARGS)
+#define __11_PLOOC_EVAL(__FUNC, __NO_ARGS)  __12_PLOOC_EVAL(__FUNC, __NO_ARGS)
+#define __10_PLOOC_EVAL(__FUNC, __NO_ARGS)  __11_PLOOC_EVAL(__FUNC, __NO_ARGS)
+#define __9_PLOOC_EVAL(__FUNC, __NO_ARGS)   __10_PLOOC_EVAL(__FUNC, __NO_ARGS)
+#define __8_PLOOC_EVAL(__FUNC, __NO_ARGS)   __9_PLOOC_EVAL(__FUNC, __NO_ARGS)
+
+#define __7_PLOOC_EVAL(__FUNC, __NO_ARGS)   __8_PLOOC_EVAL(__FUNC, __NO_ARGS)
+#define __6_PLOOC_EVAL(__FUNC, __NO_ARGS)   __7_PLOOC_EVAL(__FUNC, __NO_ARGS)
+#define __5_PLOOC_EVAL(__FUNC, __NO_ARGS)   __6_PLOOC_EVAL(__FUNC, __NO_ARGS)
+#define __4_PLOOC_EVAL(__FUNC, __NO_ARGS)   __5_PLOOC_EVAL(__FUNC, __NO_ARGS)
+#define __3_PLOOC_EVAL(__FUNC, __NO_ARGS)   __4_PLOOC_EVAL(__FUNC, __NO_ARGS)
+#define __2_PLOOC_EVAL(__FUNC, __NO_ARGS)   __3_PLOOC_EVAL(__FUNC, __NO_ARGS)
+#define __1_PLOOC_EVAL(__FUNC, __NO_ARGS)   __2_PLOOC_EVAL(__FUNC, __NO_ARGS)
+#define __0_PLOOC_EVAL(__FUNC, __NO_ARGS)   __1_PLOOC_EVAL(__FUNC, __NO_ARGS)
+
+#define __PLOOC_EVAL(__FUNC, ...)           __0_PLOOC_EVAL(                     \
+                                                __FUNC,                         \
+                                                __PLOOC_VA_NUM_ARGS(__VA_ARGS__))
+//! @}   
+#endif
+
+#define __var_declare_and_set(__name, __type, __value) \
+        __type __name = __value;
+#define __var_declare(__name, __type) __type __name;
+
+#define __var2  __var_declare
+#define __var3  __var_declare_and_set
+
+#define var(__name, __type, ...)                       \
+        __PLOOC_EVAL(__var, __name, __type, ##__VA_ARGS__)(__name, __type, ##__VA_ARGS__)
+
+//#define var(_name, _type)           
 
 #define _USE_EXCEPTION
 #ifdef _USE_EXCEPTION
@@ -154,5 +205,7 @@ typedef void * nil;
         } while (0);
 
 #endif /* _USE_COROUTINE */
+
+
 
 #endif  /* _MARCO_C_LANG_H */

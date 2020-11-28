@@ -37,7 +37,7 @@ else
 endif
 
 # flags	
-CFLAGS   = $(INCS) -g3
+CFLAGS   = $(INCS) -g3 -std=c99
 
 # objects		
 OBJS = 	main.o \

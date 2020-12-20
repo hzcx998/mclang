@@ -4,6 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+extern void cbasic();
+
 decl(test, s32, arg(a, s32), arg(b, s32))
 
 def (ascending, s32)
@@ -16,6 +18,7 @@ def (ascending, s32)
 end
 
 def (main, s32)
+    cbasic();
     call(printf, "hello, world!\n")
     var(a, s32)
     var(A, s32, 1)

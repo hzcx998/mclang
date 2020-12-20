@@ -41,7 +41,7 @@ CFLAGS   = $(INCS) -g3 -std=c99
 
 # objects		
 OBJS = 	main.o \
-
+		cbasic.o \
 	
 .PHONY: all clean
 

@@ -1,4 +1,3 @@
-#include "mclang.h"
 #include "cbasic.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -18,7 +17,7 @@ EndFunction
 Sub(cbasic)
     ConsoleWriteLine("cbasic")
     DimAs(a, Integer, 1)
-    $(a = 10)
+    Exp(a = 10)
     DimAs(b, Boolean, False)
 
     ConstAs(c, Integer)
@@ -44,31 +43,31 @@ Sub(cbasic)
 
     DimAs(i, Integer, 0)
     DoWhile(i < 10)
-        ConsoleWrite("%d", i);
-        $(i += 1)
+        ConsoleWrite("%d", i)
+        Exp(i += 1)
     Loop
 
-    $(i = 0)
+    Exp(i = 0)
 
     DoUntil(i > 10)
         ConsoleWrite("%d", i)
-        $(i += 1)
+        Exp(i += 1)
         ContinueDo
     Loop
 
-    $(i = 0)
+    Exp(i = 0)
     Do
         ConsoleWrite("%d", i)
-        i += 1;
+        Exp(i += 1)
         If i > 5 Then
             ExitDo
         EndIf
     LoopWhile(i < 10) 
         
-    $(i = 0)
+    Exp(i = 0)
     While(i < 10)
         ConsoleWrite("%d", i)
-        $(i += 1)
+        Exp(i += 1)
     EndWhile
 
     Goto(label)
@@ -76,9 +75,9 @@ Sub(cbasic)
 label:
     ConsoleWriteLine("second")
 
-    DimAs(j, Integer, 10);
+    DimAs(j, Integer, 10)
 
-    $(j = i + 10 * 30 + Min(20, 10))
+    Exp(j = i + 10 * 30 + Min(20, 10))
 
-    exit(0);
+    Exp(exit(0))
 EndSub

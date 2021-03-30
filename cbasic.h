@@ -1,7 +1,10 @@
+/**
+ * Copyright (C), 2020, Jason Hu, www.book-os.org
+ */
 #ifndef _CBASIC_H
 #define _CBASIC_H
 
-#include "mclang.h"
+#include "macro.h"
 
 typedef char *      String;
 typedef char        Byte;
@@ -42,11 +45,6 @@ typedef char        Boolean;
 #define Static      static
 #define Private     static
 #define Public
-
-/*
-#define DimAs(__name, __type) \
-        __type __name
-*/
 
 /*----Dim As ----*/
 #define ByVal(__name, __type) \
@@ -94,6 +92,6 @@ typedef char        Boolean;
 #define ConsoleWrite(fmt, ...) printf(fmt, ##__VA_ARGS__);
 #define ConsoleWriteLine(fmt, ...) printf(fmt"\n", ##__VA_ARGS__);
 
-#define $(exp)  exp;     
+#define Exp(exp)  exp;     
 
 #endif /* _CBASIC_H */

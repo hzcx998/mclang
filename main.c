@@ -18,36 +18,36 @@ def (ascending, s32)
 end
 
 def (main, s32)
-    cbasic();
-    call(printf, "hello, world!\n")
+    //cbasic();
+    $(printf, "hello, world!\n")
     var(a, s32)
     var(A, s32, 1)
     as(A, A + 1)
     loop true then
         as(A, A+1)
-        call(printf, "A: %d\n", A)
+        $(printf, "A: %d\n", A)
         cmp A >= 5 then
             skip
         end
     end
 
     cmp A == 2 then
-        call(printf,"A == 2\n")
+        $(printf,"A == 2\n")
     recmp A == 3 then
-        call(printf,"A == 3\n")
+        $(printf,"A == 3\n")
     nocmp
-        call(printf,"A == %d\n", A)
+        $(printf,"A == %d\n", A)
     end
 
     match A then
     branch(7)
-        call(printf,"A cmp 7\n")
+        $(printf,"A cmp 7\n")
         skip
     branch(8)
-        call(printf,"A cmp 8\n")
+        $(printf,"A cmp 8\n")
         skip
     branch(9)
-        call(printf,"A == %d\n", A)
+        $(printf,"A == %d\n", A)
         skip
     nomatch
         skip
@@ -63,13 +63,13 @@ def (main, s32)
     var(C, s32) as(C, 1)
 
 lable(label_1)
-    call(printf,"AT LABEL 1\n")
+    $(printf,"AT LABEL 1\n")
     
 lable(label_2)
-    call(printf,"AT LABEL 2\n")
+    $(printf,"AT LABEL 2\n")
 
 lable(label_3)
-    call(printf,"AT LABEL 3\n")
+    $(printf,"AT LABEL 3\n")
     back(test(1, 2))
 end
 
@@ -81,7 +81,7 @@ end
 def (test, s32, arg(x, s32), arg(y, s32))
 
     var(i, s32) forcond i = 0; i < 10; inc(i) then
-        call(printf, "i=%d\n", i)
+        $(printf, "i=%d\n", i)
     end
 
     mutli (list(C),
@@ -108,11 +108,11 @@ def (test, s32, arg(x, s32), arg(y, s32))
     var(item, char)
     var(idx, s32, 0)
     foreach (item, idx, data) then
-        call(printf,"item:%d\n", item)
+        $(printf,"item:%d\n", item)
     end
 
     forindex (item, arraysize(data), 1) then
-        call(printf,"index:%d\n", item)
+        $(printf,"index:%d\n", item)
     end
 
     var(a, int, 3)
@@ -124,27 +124,27 @@ def (test, s32, arg(x, s32), arg(y, s32))
         nocmp 
             try
                 cmp a > 2 then
-                    call(printf,"throw 1\n")
+                    $(printf,"throw 1\n")
                     throw(1)
                 end
             catch(1)
-                call(printf,"throw 3\n")
+                $(printf,"throw 3\n")
                 throw(3)
             endtry
         end
     catch(1)
-        call(printf,"catch 1\n")
+        $(printf,"catch 1\n")
     catch(2)
-        call(printf,"catch 2\n")
+        $(printf,"catch 2\n")
     finally
-        call(printf,"catch finally\n")
+        $(printf,"catch finally\n")
     endtry
 
-    call(free, xbook(malloc(32)))
+    $(free, xbook(malloc(32)))
 
-    call(printf, "call: %d\n", ascending())
-    call(printf, "call: %d\n", ascending())
-    call(printf, "call: %d\n", ascending())
+    $(printf, "call: %d\n", ascending())
+    $(printf, "call: %d\n", ascending())
+    $(printf, "call: %d\n", ascending())
 
     back(0)
 end
